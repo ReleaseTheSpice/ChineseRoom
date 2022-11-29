@@ -5,6 +5,7 @@ using UnityEngine;
 public class StartTerminalScript : MonoBehaviour
 {
     public GameObject TerminalUI;
+    public CharacterControl characterControl;
 
     bool touchingTerminal = false;
     private void Start()
@@ -20,11 +21,13 @@ public class StartTerminalScript : MonoBehaviour
             {
                 Debug.Log("Close Terminal");
                 TerminalUI.SetActive(false);
+                characterControl.canMove = true;
             }
             else
             {
                 Debug.Log("Open Terminal");
                 TerminalUI.SetActive(true);
+                characterControl.canMove = false;
             }
             
         }
