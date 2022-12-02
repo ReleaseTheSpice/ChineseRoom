@@ -28,7 +28,7 @@ public class SelectionManager : MonoBehaviour
         if (Physics.Raycast(ray, out hit))
         {
             if (hit.transform.GetComponent<ISelectableBehaviour>() != null
-                && Vector3.Distance(hit.transform.position, transform.position) <= 10)
+                && Vector3.Distance(hit.transform.position, transform.position) <= 5)
             {
                 selectedObject = hit.transform;
                 if(!promptCanvas.gameObject.activeSelf) promptCanvas.gameObject.SetActive(true);
