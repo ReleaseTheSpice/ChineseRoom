@@ -41,6 +41,12 @@ public class Conversation
         return messages[currentIndex];
     }
 
+    public void Reset()
+    {
+        currentIndex = 0;
+        hasEnded = false;
+    }
+
     public void IncrementMessage()
     {
         if (hasEnded)
@@ -80,13 +86,6 @@ public class ConversationManager : MonoBehaviour
 
         DisplayCurrentMessage(IsInEmojis: true);
         currentConversation.IncrementMessage();
-
-        // MESSAGE BOX DEMO
-        /*foreach (Message m in currentConversation.messages)
-        {
-            DisplayCurrentMessage(IsInEmojis: true);
-            currentConversation.IncrementMessage();
-        }*/
     }
 
     private void Update()
@@ -96,6 +95,11 @@ public class ConversationManager : MonoBehaviour
         {
             DisplayCurrentMessage(IsInEmojis: true);
             currentConversation.IncrementMessage();
+        }
+
+        if (Input.GetKeyDown(KeyCode.LeftAlt))
+        {
+            TranslateCurrentConversation();
         }
     }
 
@@ -152,6 +156,26 @@ public class ConversationManager : MonoBehaviour
     private bool ValidateCurrentMessage(string TMPstring)
     {
         return TMPstring == EmojiIDsToTMPString(currentConversation.GetCurrentMessage().emojis);
+    }
+
+    // validates input and sends message
+    public void SendMessage()
+    {
+        if (ValidateCurrentMessage(emojiInputBox.text))
+        {
+            DisplayCurrentMessage();
+        }
+    }
+
+    public void TranslateCurrentConversation()
+    {
+        conversationTextBox.text = "english translation\n\n";
+        currentConversation.Reset();
+        foreach (Message m in currentConversation.messages)
+        {
+            DisplayCurrentMessage(IsInEmojis: false);
+            currentConversation.IncrementMessage();
+        }
     }
 
     // display the current message into the message box
