@@ -10,7 +10,7 @@ public class StartTerminalScript : MonoBehaviour
     bool touchingTerminal = false;
     private void Start()
     {
-        TerminalUI.SetActive(true);
+        TerminalUI.SetActive(false);
     }
 
     private void Update()
