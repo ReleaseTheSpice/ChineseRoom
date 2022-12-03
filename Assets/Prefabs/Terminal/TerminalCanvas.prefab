@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1798443264526729148}
   - component: {fileID: 8306187465009568021}
   - component: {fileID: 8908413732807309568}
+  - component: {fileID: 1028949174352880035}
   m_Layer: 5
   m_Name: EmojiInputContent
   m_TagString: Untagged
@@ -135,6 +136,18 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &1028949174352880035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1592012154554520523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44b86eaaae03f014194d59d73eab7634, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2095723058723539669
 GameObject:
   m_ObjectHideFlags: 0

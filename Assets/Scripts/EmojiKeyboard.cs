@@ -19,8 +19,7 @@ public class EmojiKeyboard : MonoBehaviour
         {
             if(Input.GetKeyDown(KeyCode.Backspace))
             {
-                mtextComponent.text = mtextComponent.text.Substring(0,
-                    mtextComponent.text.Length - GetLastTagSize(mtextComponent.text));
+                mtextComponent.text = mtextComponent.text.Substring(0, mtextComponent.text.Length - GetLastTagSize(mtextComponent.text));
                 mkeyDown = true;
             }
             else if(Input.GetKeyDown(KeyCode.Return))
@@ -37,6 +36,9 @@ public class EmojiKeyboard : MonoBehaviour
 
     int GetLastTagSize(string value)
     {
+        if (value.Length <= 1)
+            return 0;
+
         int lindex = value.Length - 1, size = 0;
         do
         {
