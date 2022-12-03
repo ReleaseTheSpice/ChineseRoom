@@ -74,6 +74,7 @@ public class ConversationManager : MonoBehaviour
 {
     public TextMeshProUGUI conversationTextBox;
     public TextMeshProUGUI emojiInputBox;
+    public TextMeshProUGUI dictionaryText;
 
     private List<Conversation> conversations = new List<Conversation>();
     private Conversation currentConversation;
@@ -83,6 +84,7 @@ public class ConversationManager : MonoBehaviour
         InitializeConversations();
         currentConversation = conversations[Random.Range(0, conversations.Count - 1)]; // set current conversation
         conversationTextBox.text = "";
+        dictionaryText.text = "";
 
         DisplayCurrentMessage(IsInEmojis: true);
         currentConversation.IncrementMessage();
@@ -173,13 +175,13 @@ public class ConversationManager : MonoBehaviour
         currentConversation.Reset();
         foreach (Message m in currentConversation.messages)
         {
-            DisplayCurrentMessage(IsInEmojis: false);
+            DisplayCurrentMessage(IsInEmojis: false, IsInPlayMode: false);
             currentConversation.IncrementMessage();
         }
     }
 
     // display the current message into the message box
-    public void DisplayCurrentMessage(bool IsInEmojis = false)
+    public void DisplayCurrentMessage(bool IsInEmojis = false, bool IsInPlayMode = true)
     {
         if (currentConversation.hasEnded)
             return;
@@ -202,12 +204,34 @@ public class ConversationManager : MonoBehaviour
             conversationTextBox.text += currentConversation.GetCurrentMessage().message;
         }
         conversationTextBox.text += "\n\n";
+
+        if (!IsInPlayMode)
+            return;
+
+        if (currentConversation.GetCurrentMessage().sender == Sender.Player)
+        {
+            currentConversation.IncrementMessage();
+            DisplayCurrentMessage(IsInEmojis: IsInEmojis);
+        }
+        else
+        {
+            DisplayDictionaryPage();
+        }
+            
     }
 
     // display the current message into the dictionary page
     public void DisplayDictionaryPage()
     {
-        // TODO
+        
+        if (currentConversation.currentIndex < currentConversation.messages.Count-2)
+        {
+            dictionaryText.text = "IF: ";
+            dictionaryText.text += EmojiIDsToTMPString(currentConversation.GetCurrentMessage().emojis);
+            dictionaryText.text += "\n\nTHEN: ";
+            dictionaryText.text += EmojiIDsToTMPString(currentConversation.messages[currentConversation.currentIndex+1].emojis);
+        }
+
     }
 
     private void InitializeConversations()
