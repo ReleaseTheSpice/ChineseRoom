@@ -5,35 +5,44 @@ using TMPro;
 
 public class Dialogue : MonoBehaviour, ISelectableBehaviour
 {
-    public string dialogue;
+    public List<string> dialogue;
 
     [SerializeField]
     private TextMeshProUGUI textBox;
 
     private bool talking = false;
 
+    private bool began = false;
+
     public void clicked(){
         if(!talking){
             talking = true;
-            StartCoroutine(RunLine(dialogue));
+            if(!began) StartCoroutine(RunLines());
         }
         
     }
 
-    private IEnumerator RunLine(string line)
+    private IEnumerator RunLines()
     {
-        
-        string dialogueText = "";
+        began = true;
         float waitTime = 1f / 20f; // 75 letters per second (time to wait between characters)
-
-        foreach (char letter in line)
-        {
-            dialogueText += letter;
-            textBox.SetText(dialogueText);
-            yield return new WaitForSecondsRealtime(waitTime);
-            
+        int index = 0;
+        while(index < dialogue.Count){
+            string line = dialogue[index];
+            string dialogueText = "";
+            foreach (char letter in line)
+            {
+                dialogueText += letter;
+                textBox.SetText(dialogueText);
+                yield return new WaitForSecondsRealtime(waitTime);
+                
+            }
+            talking = false;
+            yield return new WaitUntil(() => talking);
+            index++;
         }
-        //textBox.SetText("");
-        talking = false;
+        talking = true;
+        Destroy(this);
+        yield return null;
     }
 }
