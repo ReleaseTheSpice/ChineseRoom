@@ -26,12 +26,7 @@ public class EmojiKeyboard : MonoBehaviour
             }
             else if(Input.GetKeyDown(KeyCode.Return))
             {
-                //EXTRACT INPUT VALUE HERE
-
-                print(mtextComponent.text.Remove(0,1));
                 conversationManager.SendMessage();
-
-                mtextComponent.text = ">";
                 mkeyDown = true;
             }
         }
