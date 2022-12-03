@@ -5,6 +5,11 @@ using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEditor.VersionControl;
 using UnityEngine;
+using TMPro;
+using Unity.VisualScripting.FullSerializer;
+using System;
+using Random = UnityEngine.Random;
+using UnityEngine.UI;
 
 public enum Sender
 {
@@ -30,15 +35,33 @@ public class Conversation
 {
     public List<Message> messages;
     public int currentIndex;
+    public bool hasEnded = false;
 
     public Message GetCurrentMessage()
     {
         return messages[currentIndex];
     }
 
-    public Message GetNextMessage()
+    public void Reset()
     {
-        return messages[currentIndex++];
+        currentIndex = 0;
+        hasEnded = false;
+    }
+
+    public void IncrementMessage()
+    {
+        if (hasEnded)
+            return;
+
+        if (currentIndex == messages.Count-1)
+        {
+            hasEnded = true;
+            Debug.Log("Conversation completed");
+            return;
+        }
+
+        currentIndex++;
+
     }
 
     public Conversation()
@@ -50,13 +73,34 @@ public class Conversation
 
 public class ConversationManager : MonoBehaviour
 {
-    List<Conversation> conversations = new List<Conversation>();
-    Conversation currentConversation;
+    public TextMeshProUGUI conversationTextBox;
+    public TextMeshProUGUI emojiInputBox;
+    public TextMeshProUGUI dictionaryText;
+    public ScrollRect conversationScroller;
+
+    private List<Conversation> conversations = new List<Conversation>();
+    private Conversation currentConversation;
+
+    private bool isGameOver = false;
 
     void Awake()
     {
         InitializeConversations();
         currentConversation = conversations[Random.Range(0, conversations.Count - 1)]; // set current conversation
+        conversationTextBox.text = "";
+        dictionaryText.text = "";
+
+        DisplayCurrentMessage(IsInEmojis: true);
+    }
+
+    private void Update()
+    {
+        // TESTING
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            emojiInputBox.text = ">" +
+                EmojiIDsToTMPString(currentConversation.messages[currentConversation.currentIndex].emojis);
+        }
     }
 
     // creates a string that works for textmeshpro from a list of emoji ids
@@ -111,19 +155,102 @@ public class ConversationManager : MonoBehaviour
     // check if an emoji string matches the current message of the current conversation
     private bool ValidateCurrentMessage(string TMPstring)
     {
-        return TMPstring == EmojiIDsToTMPString(currentConversation.GetCurrentMessage().emojis);
+        return TMPstring == ">" + EmojiIDsToTMPString(currentConversation.messages[currentConversation.currentIndex].emojis);
+    }
+
+    // validates input and sends message
+    public void SendMessage()
+    {
+        if (isGameOver)
+            return;
+
+        if (currentConversation.hasEnded)
+        {
+            TranslateCurrentConversation();
+            isGameOver = true;
+            return;
+        }
+
+        if (ValidateCurrentMessage(emojiInputBox.text))
+        {
+            emojiInputBox.text = ">";
+            DisplayCurrentMessage(IsInEmojis: true);
+        }
+    }
+
+    public void TranslateCurrentConversation()
+    {
+        conversationTextBox.text = "english translation\n\n";
+        currentConversation.Reset();
+        foreach (Message m in currentConversation.messages)
+        {
+            DisplayCurrentMessage(IsInEmojis: false, IsInPlayMode: false);
+        }
+        dictionaryText.text = "<sprite index=0>";
     }
 
     // display the current message into the message box
-    public void DisplayCurrentMessage()
+    public void DisplayCurrentMessage(bool IsInEmojis = false, bool IsInPlayMode = true)
     {
-        // TODO
+        if (currentConversation.hasEnded)
+        {
+            return;
+        }
+
+        if (currentConversation.GetCurrentMessage().sender == Sender.Player)
+        {
+            conversationTextBox.text += "You: ";
+        }
+        else
+        {
+            conversationTextBox.text += "Bob: ";
+        }
+
+        if (IsInEmojis)
+        {
+            conversationTextBox.text += EmojiIDsToTMPString(currentConversation.GetCurrentMessage().emojis);
+        }
+        else
+        {
+            conversationTextBox.text += currentConversation.GetCurrentMessage().message;
+        }
+        conversationTextBox.text += "\n\n";
+
+        if (!IsInPlayMode)
+        {
+            currentConversation.IncrementMessage();
+            return;
+        }
+        conversationScroller.velocity = new Vector2(0, 1000f);
+
+        if (currentConversation.GetCurrentMessage().sender == Sender.Player)
+        {
+            currentConversation.IncrementMessage();
+            DisplayCurrentMessage(IsInEmojis: IsInEmojis);
+        }
+        else
+        {
+            DisplayDictionaryPage();
+        }
+        currentConversation.IncrementMessage();
+        if (currentConversation.hasEnded)
+        {
+            dictionaryText.text = "Conversation Complete\nPress Enter";
+        }
     }
 
     // display the current message into the dictionary page
     public void DisplayDictionaryPage()
     {
-        // TODO
+        
+        if (currentConversation.currentIndex < currentConversation.messages.Count-2)
+        {
+            dictionaryText.text = "IF: ";
+            dictionaryText.text += EmojiIDsToTMPString(currentConversation.GetCurrentMessage().emojis);
+            dictionaryText.text += "\n\nTHEN: ";
+            dictionaryText.text += EmojiIDsToTMPString(currentConversation.messages[currentConversation.currentIndex+1].emojis);
+        }
+
     }
 
     private void InitializeConversations()
