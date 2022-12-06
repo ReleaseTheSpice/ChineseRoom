@@ -83,7 +83,7 @@ public class ConversationManager : MonoBehaviour
 
     private bool isGameOver = false;
 
-    void Awake()
+    void Start()
     {
         InitializeConversations();
         currentConversation = conversations[Random.Range(0, conversations.Count - 1)]; // set current conversation
@@ -175,6 +175,11 @@ public class ConversationManager : MonoBehaviour
         {
             emojiInputBox.text = ">";
             DisplayCurrentMessage(IsInEmojis: true);
+            AudioManager.instance.PlaySound("accept");
+        }
+        else
+        {
+            AudioManager.instance.PlaySound("error");
         }
     }
 

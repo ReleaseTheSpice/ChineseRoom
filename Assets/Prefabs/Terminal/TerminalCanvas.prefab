@@ -1257,7 +1257,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000027939677, y: 5}
+  m_AnchoredPosition: {x: 0.000027939677, y: -5}
   m_SizeDelta: {x: 0, y: 310}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2685896604839466630
@@ -1424,6 +1424,7 @@ GameObject:
   - component: {fileID: 8454509324354786945}
   - component: {fileID: 8454509324354786944}
   - component: {fileID: -8516538552962444274}
+  - component: {fileID: 8192135999607891784}
   m_Layer: 5
   m_Name: TerminalCanvas
   m_TagString: Untagged
@@ -1528,9 +1529,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b797998595588a84f83d2100af0fdfc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  conversationTextBox: {fileID: 0}
-  emojiInputBox: {fileID: 0}
-  dictionaryText: {fileID: 0}
+  conversationTextBox: {fileID: 217759741849726079}
+  emojiInputBox: {fileID: 8908413732807309568}
+  dictionaryText: {fileID: 7688745264434802123}
+  conversationScroller: {fileID: 8710462518292950525}
+--- !u!114 &8192135999607891784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8454509324354786951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a460f01c33026ea44aec53863acfd04f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: error
+    clip: {fileID: 8300000, guid: 75503f7ae0859994387d5c243286fa35, type: 3}
+    volume: 1
+    pitch: 0.506
+    randomVolume: 0
+    randomPitch: 0
+    loops: 0
+  - name: accept
+    clip: {fileID: 8300000, guid: b00e23c87098f0e4e833816566abdf3a, type: 3}
+    volume: 1
+    pitch: 0.506
+    randomVolume: 0
+    randomPitch: 0
+    loops: 0
+  - name: ping
+    clip: {fileID: 8300000, guid: fc9909df3ec02dc4690705a416ff487d, type: 3}
+    volume: 1
+    pitch: 0.506
+    randomVolume: 0
+    randomPitch: 0
+    loops: 0
+  - name: click
+    clip: {fileID: 8300000, guid: 748fd32b4bc56b14cadf445ab8b646d5, type: 3}
+    volume: 1
+    pitch: 0.506
+    randomVolume: 0
+    randomPitch: 0
+    loops: 0
+  - name: beep
+    clip: {fileID: 8300000, guid: d842b1315f2c4424d9c920d5311616af, type: 3}
+    volume: 1
+    pitch: 0.506
+    randomVolume: 0
+    randomPitch: 0
+    loops: 0
 --- !u!1 &8454509324934632947
 GameObject:
   m_ObjectHideFlags: 0
