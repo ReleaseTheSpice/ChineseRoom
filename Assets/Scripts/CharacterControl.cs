@@ -19,58 +19,53 @@ public class CharacterControl : MonoBehaviour
     void Start()
     {
         characterController = GetComponent<CharacterController>();
+        StartCoroutine(StepLoop());
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (canMove)
+        if (!canMove)
+            return;
+
+        if (characterController.isGrounded && Input.GetKey(KeyCode.LeftShift))
         {
-            if (characterController.isGrounded && Input.GetKey(KeyCode.LeftShift))
-            {
-                runningSpeed = speed * 2;
-            }
-            else
-            {
-                runningSpeed = speed;
-            }
-
-            if (!characterController.isGrounded)
-            {
-                gravity += Physics.gravity;
-            }
-            else
-            {
-                gravity = Vector3.zero;
-            }
-
-            this.rotation = new Vector3(0, Input.GetAxisRaw("Horizontal") * rotationSpeed * Time.deltaTime, 0);
-
-            Vector3 move = new Vector3(0, 0, Input.GetAxisRaw("Vertical") * Time.deltaTime) + gravity;
-
-            if (!isMoving && move != Vector3.zero)
-            {
-                isMoving = true;
-                StartCoroutine(StepLoop());
-            }
-            
-            if (move == Vector3.zero)
-            {
-                isMoving = false;
-            }
-
-            move = this.transform.TransformDirection(move);
-            characterController.Move(move * runningSpeed);
-            this.transform.Rotate(this.rotation);
+            runningSpeed = speed * 2;
         }
+        else
+        {
+            runningSpeed = speed;
+        }
+
+        if (!characterController.isGrounded)
+        {
+            gravity += Physics.gravity;
+        }
+        else
+        {
+            gravity = Vector3.zero;
+        }
+
+        this.rotation = new Vector3(0, Input.GetAxisRaw("Horizontal") * rotationSpeed * Time.deltaTime, 0);
+
+        Vector3 move = new Vector3(0, 0, Input.GetAxisRaw("Vertical") * Time.deltaTime) + gravity;
+
+        isMoving = (Input.GetAxisRaw("Vertical") > 0);
+        if (Input.GetKeyDown(KeyCode.W) && isMoving)
+        {
+            AudioManager.instance.PlaySound("step");
+        }
+
+        move = this.transform.TransformDirection(move);
+        characterController.Move(move * runningSpeed);
+        this.transform.Rotate(this.rotation);
     }
 
     public IEnumerator StepLoop()
     {
-        AudioManager.instance.PlaySound("step");
+        if (canMove && isMoving)
+            AudioManager.instance.PlaySound("step");
         yield return new WaitForSeconds(.5f);
-        
-        if (canMove)
-            StartCoroutine(StepLoop());
+        StartCoroutine(StepLoop());
     }
 }
