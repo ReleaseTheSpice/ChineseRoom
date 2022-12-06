@@ -1532,7 +1532,7 @@ MonoBehaviour:
   conversationTextBox: {fileID: 217759741849726079}
   emojiInputBox: {fileID: 8908413732807309568}
   dictionaryText: {fileID: 7688745264434802123}
-  conversationScroller: {fileID: 8710462518292950525}
+  conversationScroller: {fileID: 6910071395845852378}
 --- !u!114 &8192135999607891784
 MonoBehaviour:
   m_ObjectHideFlags: 0

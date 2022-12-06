@@ -53,7 +53,7 @@ public class Conversation
         if (hasEnded)
             return;
 
-        if (currentIndex == messages.Count-1)
+        if (currentIndex >= messages.Count-1)
         {
             hasEnded = true;
             Debug.Log("Conversation completed");
@@ -89,9 +89,9 @@ public class ConversationManager : MonoBehaviour
         currentConversation = conversations[Random.Range(0, conversations.Count - 1)]; // set current conversation
         conversationTextBox.text = "";
         dictionaryText.text = "";
-
         DisplayCurrentMessage(IsInEmojis: true);
     }
+    
 
     private void Update()
     {
@@ -176,6 +176,9 @@ public class ConversationManager : MonoBehaviour
             emojiInputBox.text = ">";
             DisplayCurrentMessage(IsInEmojis: true);
             AudioManager.instance.PlaySound("accept");
+
+            if (currentConversation.hasEnded)
+                dictionaryText.text = "Conversation Complete\nPress Enter";
         }
         else
         {
@@ -191,7 +194,7 @@ public class ConversationManager : MonoBehaviour
         {
             DisplayCurrentMessage(IsInEmojis: false, IsInPlayMode: false);
         }
-        dictionaryText.text = "<sprite index=0>";
+        dictionaryText.text = "<sprite index=0>\nYour job is done! Press E to close";
     }
 
     // display the current message into the message box
@@ -250,8 +253,8 @@ public class ConversationManager : MonoBehaviour
     // display the current message into the dictionary page
     public void DisplayDictionaryPage()
     {
-        
-        if (currentConversation.currentIndex < currentConversation.messages.Count-2)
+
+        if (currentConversation.currentIndex < currentConversation.messages.Count-1)
         {
             dictionaryText.text = "IF: ";
             dictionaryText.text += EmojiIDsToTMPString(currentConversation.GetCurrentMessage().emojis);
@@ -286,6 +289,7 @@ public class ConversationManager : MonoBehaviour
                                                              "like a faucet, you have to be in the right mood. ", new List<int> { 56, 4, 66, 22, 69, 14}));
         CalvinHobbes.messages.Add(new Message(Sender.Other, "What mood is that?", new List<int> { 66, 22, 1 }));
         CalvinHobbes.messages.Add(new Message(Sender.Player, "Last-minute panic.", new List<int> { 30, 18, 57 }));
+        CalvinHobbes.messages.Add(new Message(Sender.Other, "Oh.", new List<int> { 2 }));
         conversations.Add(CalvinHobbes);
 
         // Bomb Cart
@@ -296,6 +300,7 @@ public class ConversationManager : MonoBehaviour
         BombCart.messages.Add(new Message(Sender.Player, "No, but would they change to blue? ", new List<int> { 71, 65, 66}));
         BombCart.messages.Add(new Message(Sender.Other, "No, but would they change to yellow?", new List<int> { 71, 65, 62}));
         BombCart.messages.Add(new Message(Sender.Player, "No, but...", new List<int> { 71, 65 }));
+        BombCart.messages.Add(new Message(Sender.Other, "No...", new List<int> { 71, 71 }));
         conversations.Add(BombCart);
 
         // Bat
