@@ -23,10 +23,12 @@ public class InteractableDoor : MonoBehaviour, ISelectableBehaviour
             altDoorPosLeft = doorLeft.position + new Vector3(0,0,-1);
             altDoorPosRight = doorRight.position + new Vector3(0,0,1);
             elapsed = 1.0f;
+            AudioManager.instance.PlaySound("door_close");
         } else {
             altDoorPosLeft = doorLeft.position + new Vector3(0,0,1);
             altDoorPosRight = doorRight.position + new Vector3(0,0,-1);
             elapsed = 1.0f;
+            AudioManager.instance.PlaySound("door_open");
         }
     }
 
