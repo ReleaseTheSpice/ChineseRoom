@@ -221,17 +221,20 @@ public class ConversationManager : MonoBehaviour
         }
         conversationTextBox.text += "\n\n";
 
+        print(currentConversation.GetCurrentMessage().message);
+        conversationScroller.velocity = new Vector2(0, 1000f);
+
         if (!IsInPlayMode)
         {
             currentConversation.IncrementMessage();
             return;
         }
-        conversationScroller.velocity = new Vector2(0, 1000f);
 
         if (currentConversation.GetCurrentMessage().sender == Sender.Player)
         {
             currentConversation.IncrementMessage();
             DisplayCurrentMessage(IsInEmojis: IsInEmojis);
+            return;
         }
         else
         {
