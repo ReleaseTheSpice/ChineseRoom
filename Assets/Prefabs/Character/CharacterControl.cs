@@ -11,6 +11,8 @@ public class CharacterControl : MonoBehaviour
     public float speed = 5f;
     public float rotationSpeed = 180f;
 
+    private bool isMoving = false;
+
     private Vector3 rotation;
 
     // Start is called before the first frame update
@@ -45,9 +47,29 @@ public class CharacterControl : MonoBehaviour
             this.rotation = new Vector3(0, Input.GetAxisRaw("Horizontal") * rotationSpeed * Time.deltaTime, 0);
 
             Vector3 move = new Vector3(0, 0, Input.GetAxisRaw("Vertical") * Time.deltaTime) + gravity;
+
+            if (!isMoving && move != Vector3.zero)
+            {
+                isMoving = true;
+                StartCoroutine(StepLoop());
+            }
+            
+            if (move == Vector3.zero)
+            {
+                isMoving = false;
+                StopAllCoroutines();
+            }
+
             move = this.transform.TransformDirection(move);
             characterController.Move(move * runningSpeed);
             this.transform.Rotate(this.rotation);
         }
+    }
+
+    public IEnumerator StepLoop()
+    {
+        AudioManager.instance.PlaySound("step");
+        yield return new WaitForSeconds(.5f);
+        StartCoroutine(StepLoop());
     }
 }

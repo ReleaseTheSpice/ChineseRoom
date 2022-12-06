@@ -28,5 +28,6 @@ public class ClickableEmoji : MonoBehaviour
         if (cm.emojiInputBox.text.Length + textbox.text.Length > 239)
             return;
         cm.emojiInputBox.text += textbox.text;
+        AudioManager.instance.PlaySound("click");
     }
 }

@@ -25,6 +25,7 @@ public class StartTerminalScript : MonoBehaviour
             }
             else
             {
+                AudioManager.instance.PlaySound("beep");
                 Debug.Log("Open Terminal");
                 TerminalUI.SetActive(true);
                 characterControl.canMove = false;
