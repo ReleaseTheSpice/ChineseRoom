@@ -185,7 +185,7 @@ public class ConversationManager : MonoBehaviour
 
     public void TranslateCurrentConversation()
     {
-        conversationTextBox.text = "english translation\n\n";
+        conversationTextBox.text = "English Translation:\n\n";
         currentConversation.Reset();
         foreach (Message m in currentConversation.messages)
         {

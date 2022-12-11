@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class StartTerminalScript : MonoBehaviour
@@ -17,6 +15,8 @@ public class StartTerminalScript : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E) && touchingTerminal)
         {
+            GameManager.Instance.ToggleCursor();
+
             if (TerminalUI.activeInHierarchy)
             {
                 Debug.Log("Close Terminal");
@@ -30,7 +30,6 @@ public class StartTerminalScript : MonoBehaviour
                 TerminalUI.SetActive(true);
                 characterControl.canMove = false;
             }
-            
         }
     }
 
